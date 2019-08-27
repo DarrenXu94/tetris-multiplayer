@@ -20,6 +20,8 @@ class Player {
         this.nextPeices = []
         this.nextPeicesArrayLength = 3;
 
+        this.pauseJuice = 200;
+
         this.reset();
     }
 
@@ -76,13 +78,24 @@ class Player {
             this.pos.y--;
             this.arena.merge(this);
             this.reset();
-            this.score += this.arena.sweep();
+            this.score += this.arena.sweep(this);
             this.events.emit('score', this.score);
             return;
         }
         this.events.emit('pos', this.pos);
         this.events.emit('nextPeices', this.nextPeices);
+    }
 
+    restoreHoldEnergy(amount) {
+        this.pauseJuice += amount
+    }
+
+    holdPiece() {
+        if (this.pauseJuice) {
+
+            this.dropInterval = 6000;
+            this.pauseJuice--;
+        }
     }
 
     move(dir) {
@@ -107,6 +120,7 @@ class Player {
         if (this.arena.collide(this)) {
             this.arena.clear();
             this.score = 0;
+            this.pauseJuice = 200;
             this.events.emit('score', this.score);
         }
 

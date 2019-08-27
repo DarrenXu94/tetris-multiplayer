@@ -1,7 +1,5 @@
-class Arena
-{
-    constructor(w, h)
-    {
+class Arena {
+    constructor(w, h) {
         const matrix = [];
         while (h--) {
             matrix.push(new Array(w).fill(0));
@@ -11,20 +9,18 @@ class Arena
         this.events = new Events;
     }
 
-    clear()
-    {
+    clear() {
         this.matrix.forEach(row => row.fill(0));
         this.events.emit('matrix', this.matrix);
     }
 
-    collide(player)
-    {
+    collide(player) {
         const [m, o] = [player.matrix, player.pos];
         for (let y = 0; y < m.length; ++y) {
             for (let x = 0; x < m[y].length; ++x) {
                 if (m[y][x] !== 0 &&
                     (this.matrix[y + o.y] &&
-                    this.matrix[y + o.y][x + o.x]) !== 0) {
+                        this.matrix[y + o.y][x + o.x]) !== 0) {
                     return true;
                 }
             }
@@ -32,8 +28,7 @@ class Arena
         return false;
     }
 
-    merge(player)
-    {
+    merge(player) {
         player.matrix.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
@@ -44,8 +39,7 @@ class Arena
         this.events.emit('matrix', this.matrix);
     }
 
-    sweep()
-    {
+    sweep(player) {
         let rowCount = 1;
         let score = 0;
         outer: for (let y = this.matrix.length - 1; y > 0; --y) {
@@ -62,6 +56,7 @@ class Arena
             score += rowCount * 10;
             rowCount *= 2;
         }
+        player.restoreHoldEnergy(score)
         this.events.emit('matrix', this.matrix);
         return score;
     }

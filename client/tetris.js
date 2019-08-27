@@ -42,6 +42,8 @@ class Tetris {
             lastTime = time;
 
             this.player.update(deltaTime);
+            this.element.querySelector('.juice').innerText = this.player.pauseJuice + " space juice left";
+
 
             this.draw();
             requestAnimationFrame(this._update);

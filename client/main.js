@@ -38,7 +38,7 @@ function draw() {
     } else if (keyIsDown(UP_ARROW)) {
         player.dropInterval = 1;
     } else if (keyIsDown(32)) {
-        player.dropInterval = 6000;
+        player.holdPiece()
     } else {
         player.dropInterval = player.DROP_SLOW;
     }
