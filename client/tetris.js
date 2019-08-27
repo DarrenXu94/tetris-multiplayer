@@ -1,5 +1,6 @@
 class Tetris {
     constructor(element) {
+        this.gameReady = false;
         this.element = element;
         // this.canvas = element.querySelector('canvas');
         this.canvas = element.querySelector('.tetris');
@@ -80,7 +81,10 @@ class Tetris {
     }
 
     run() {
-        this._update();
+        if (this.gameReady) {
+
+            this._update();
+        }
     }
 
     serialize() {

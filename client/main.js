@@ -15,8 +15,6 @@ const keyListener = (event) => {
     ].forEach((key, index) => {
         const player = tetrisLocal.player;
         if (event.type === 'keydown') {
-            console.log(player.holdingKeyDown)
-
             if (event.keyCode === key[0]) {
                 player.rotate(-1);
             } else if (event.keyCode === key[1]) {
@@ -38,6 +36,11 @@ const keyListener = (event) => {
 document.addEventListener('keydown', keyListener);
 document.addEventListener('keyup', keyListener);
 
+let startButton = document.getElementById("start")
+startButton.addEventListener("click", (e) => {
+    tetrisLocal.gameReady = true
+    tetrisLocal.run()
+});
 
 function draw() {
     const player = tetrisLocal.player;
