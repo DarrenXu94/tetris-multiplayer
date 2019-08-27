@@ -6,10 +6,6 @@ const server = new WebSocketServer({ port: 9000 });
 
 const sessions = new Map;
 
-const server = express()
-    .use((req, res) => res.send("INDEX"))
-    .listen(3005, () => console.log(`Listening on ${3005}`));
-
 function createId(len = 6, chars = 'abcdefghjkmnopqrstvwxyz01234567890') {
     let id = '';
     while (len--) {
