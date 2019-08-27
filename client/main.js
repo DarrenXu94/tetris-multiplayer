@@ -15,6 +15,7 @@ const keyListener = (event) => {
     ].forEach((key, index) => {
         const player = tetrisLocal.player;
         if (event.type === 'keydown') {
+            console.log("KEYDOWN")
             if (event.keyCode === key[0]) {
                 player.move(-1);
             } else if (event.keyCode === key[1]) {

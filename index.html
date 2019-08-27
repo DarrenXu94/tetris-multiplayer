@@ -7,7 +7,7 @@
             background: #000;
             color: #fff;
             font-family: sans-serif;
-            font-size: 2em;
+            font-size: 1.1em;
             text-align: center;
             /* display: flex; */
         }
@@ -18,7 +18,8 @@
         }
 
         .player {
-            flex: 1 1 auto;
+            /* flex: 1 1 auto; */
+            width: 500px;
         }
 
         .player.local canvas {
@@ -38,6 +39,7 @@
         <template id="player-template">
             <div class="player">
                 <div class="score"></div>
+                <p>Next piece on the left</p>
                 <canvas id="pieces" width="300" height="60" style="border: solid .2em #707070;"></canvas>
 
                 <canvas class="tetris" width="240" height="400"
@@ -45,9 +47,11 @@
             </div>
         </template>
     </div>
+    <script src="./libraries/p5.js"></script>
+    <script src="./libraries/p5.dom.js"></script>
+    <script src="./libraries/p5.sound.js"></script>
 
-
-    <script src=" client/connection-manager.js"> </script>
+    <script src="client/connection-manager.js"> </script>
     <script src="client/tetris-manager.js"></script>
 
     <script src="client/events.js"></script>
