@@ -1,11 +1,12 @@
 let tetrisLocal;
+let connectionManager;
 
 function setup() {
     const tetrisManager = new TetrisManager(document);
     tetrisLocal = tetrisManager.createPlayer();
     tetrisLocal.element.classList.add('local');
     tetrisLocal.run();
-    const connectionManager = new ConnectionManager(tetrisManager);
+    connectionManager = new ConnectionManager(tetrisManager);
     connectionManager.connect('ws://localhost:9000');
 
 }
@@ -40,6 +41,7 @@ let startButton = document.getElementById("start")
 startButton.addEventListener("click", (e) => {
     tetrisLocal.gameReady = true
     tetrisLocal.run()
+    connectionManager.sendStartNotification()
 });
 
 function draw() {

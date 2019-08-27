@@ -39,6 +39,13 @@ class ConnectionManager {
         }
     }
 
+    sendStartNotification() {
+        console.log("Send start")
+        this.send({
+            type: 'start-game'
+        })
+    }
+
     watchEvents() {
         const local = this.tetrisManager.instances[0];
 
@@ -111,6 +118,9 @@ class ConnectionManager {
             this.updateManager(data.peers);
         } else if (data.type === 'state-update') {
             this.updatePeer(data.clientId, data.fragment, data.state);
+        } else if (data.type === 'start-game') {
+            this.localTetris.gameReady = true;
+            this.localTetris.run()
         }
     }
 

@@ -28,13 +28,13 @@ class Tetris {
 
         this.colors = [
             null,
-            '#FF0D72',
-            '#0DC2FF',
-            '#0DFF72',
-            '#F538FF',
-            '#FF8E0D',
-            '#FFE138',
-            '#3877FF',
+            '#a000f1',
+            '#f9e60a',
+            '#ef8102',
+            '#0f01f2',
+            '#01f1f3',
+            '#02f100',
+            '#f00901',
         ];
 
         let lastTime = 0;

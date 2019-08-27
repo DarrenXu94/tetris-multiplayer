@@ -80,6 +80,8 @@ server.on('connection', conn => {
             const [key, value] = data.state;
             client.state[data.fragment][key] = value;
             client.broadcast(data);
+        } else if (data.type === 'start-game') {
+            client.broadcast(data)
         }
 
     });
