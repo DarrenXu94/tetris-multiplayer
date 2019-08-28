@@ -35,6 +35,7 @@ class Tetris {
             '#01f1f3',
             '#02f100',
             '#f00901',
+            'white'
         ];
 
         let lastTime = 0;
@@ -65,6 +66,10 @@ class Tetris {
 
         this.drawMatrix(this.arena.matrix, { x: 0, y: 0 });
         this.drawMatrix(this.player.matrix, this.player.pos);
+
+        if (this.player.futurePiece && !this.player.lineCleared) {
+            this.drawMatrix(this.player.futurePiece.matrix, this.player.futurePiece.pos)
+        }
     }
 
     drawMatrix(matrix, offset) {

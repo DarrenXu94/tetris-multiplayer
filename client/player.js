@@ -22,6 +22,8 @@ class Player {
 
         this.pauseJuice = 200;
 
+        this.futurePiece = null
+
         this.piecesAvailable = "ILJOTSZ".split("")
 
         this.reset();
@@ -86,6 +88,8 @@ class Player {
         }
         this.events.emit('pos', this.pos);
         this.events.emit('nextPeices', this.nextPeices);
+        this.showFuturePiece()
+
     }
 
     restoreHoldEnergy(amount) {
@@ -100,16 +104,42 @@ class Player {
         }
     }
 
+    showFuturePiece() {
+        let localPos = this.pos
+        let localY = localPos.y
+        while (!this.arena.collide({ matrix: this.matrix, pos: { x: this.pos.x, y: localY } })) {
+            localY += 1
+        }
+
+        let coloredMatrix = [];
+        this.matrix.forEach((row, y) => {
+            let newRow = []
+            row.forEach((value, x) => {
+                if (value !== 0) {
+                    newRow.push(8)
+                } else {
+                    newRow.push(0)
+                }
+            })
+            coloredMatrix.push(newRow)
+        })
+
+        this.futurePiece = { matrix: coloredMatrix, pos: { x: this.pos.x, y: localY - 1 } }
+    }
+
     move(dir) {
         this.pos.x += dir;
         if (this.arena.collide(this)) {
             this.pos.x -= dir;
             return;
         }
+        this.showFuturePiece()
         this.events.emit('pos', this.pos);
     }
 
     reset() {
+        this.futurePiece = null
+
         const pieces = 'ILJOTSZ';
         while (this.nextPeices.length <= this.nextPeicesArrayLength) {
             let randomIndex = this.piecesAvailable.length * Math.random()
@@ -154,6 +184,7 @@ class Player {
                 return;
             }
         }
+        this.showFuturePiece()
         this.events.emit('matrix', this.matrix);
     }
 
