@@ -22,6 +22,8 @@ class Player {
 
         this.pauseJuice = 200;
 
+        this.piecesAvailable = "ILJOTSZ".split("")
+
         this.reset();
     }
 
@@ -110,8 +112,17 @@ class Player {
     reset() {
         const pieces = 'ILJOTSZ';
         while (this.nextPeices.length <= this.nextPeicesArrayLength) {
-            let piece = this.createPiece(pieces[pieces.length * Math.random() | 0]);
+            let randomIndex = this.piecesAvailable.length * Math.random()
+            let pieceSelected = this.piecesAvailable[randomIndex | 0]
+
+            this.piecesAvailable.splice(randomIndex, 1)
+
+            let piece = this.createPiece(pieceSelected);
             this.nextPeices.push(piece)
+
+            if (this.piecesAvailable.length == 0) {
+                this.piecesAvailable = pieces.split("")
+            }
         }
         this.matrix = this.nextPeices.shift()
         this.pos.y = 0;
