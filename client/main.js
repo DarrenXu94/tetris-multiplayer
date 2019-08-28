@@ -7,8 +7,8 @@ function setup() {
     tetrisLocal.element.classList.add('local');
     tetrisLocal.run();
     connectionManager = new ConnectionManager(tetrisManager);
-    connectionManager.connect('ws://boiling-coast-74828.herokuapp.com/')
-    // connectionManager.connect('ws://localhost:9000');
+    // connectionManager.connect('ws://boiling-coast-74828.herokuapp.com/')
+    connectionManager.connect('ws://localhost:9000');
 
 }
 const keyListener = (event) => {
@@ -45,21 +45,24 @@ startButton.addEventListener("click", (e) => {
     connectionManager.sendStartNotification()
 });
 
+let lastTimePressed = 0
 function draw() {
     const player = tetrisLocal.player;
-
-    if (keyIsDown(LEFT_ARROW)) {
-        player.move(-1);
-    } else if (keyIsDown(RIGHT_ARROW)) {
-        player.move(1);
-    } else if (keyIsDown(DOWN_ARROW)) {
-        player.dropInterval = player.DROP_FAST;
-        // } else if (keyIsDown(UP_ARROW)) {
-        // player.dropInterval = 1;
-    } else if (keyIsDown(32)) {
-        player.holdPiece()
+    // Gives a playable delay
+    if (lastTimePressed > 2) {
+        if (keyIsDown(LEFT_ARROW)) {
+            player.move(-1);
+            lastTimePressed = 0
+        } else if (keyIsDown(RIGHT_ARROW)) {
+            player.move(1);
+            lastTimePressed = 0
+        } else if (keyIsDown(DOWN_ARROW)) {
+            player.dropInterval = player.DROP_FAST;
+            lastTimePressed = 0
+        } else if (keyIsDown(32)) {
+            player.holdPiece()
+        }
     }
-    // else {
-    //     player.dropInterval = player.DROP_SLOW;
-    // }
+    lastTimePressed = lastTimePressed += 1;
+
 }

@@ -1,8 +1,18 @@
 const WebSocketServer = require('ws').Server;
 const Session = require('./session');
 const Client = require('./client');
+const express = require('express')
 
-const server = new WebSocketServer({ port: 9000 });
+let port = process.env.PORT | 9000
+
+const ExpServer = express()
+    .use((req, res) => res.send(""))
+    .listen(port, () => console.log(`Listening on ${port}`));
+
+// const server = new WebSocketServer({ port: process.env.PORT | 9000 });
+const server = new WebSocketServer({ server: ExpServer });
+
+// const server = new WebSocketServer({ port: 9000 });
 
 const sessions = new Map;
 
