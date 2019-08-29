@@ -45,11 +45,12 @@ startButton.addEventListener("click", (e) => {
     connectionManager.sendStartNotification()
 });
 
-let lastTimePressed = 0
+let lastTimePressed = new Date()
 function draw() {
     const player = tetrisLocal.player;
+    let newDate = new Date()
     // Gives a playable delay
-    if (lastTimePressed > 2) {
+    if (Math.abs(newDate - lastTimePressed) > 70) {
         if (keyIsDown(LEFT_ARROW)) {
             player.move(-1);
             lastTimePressed = 0
@@ -62,7 +63,7 @@ function draw() {
         } else if (keyIsDown(32)) {
             player.holdPiece()
         }
+        lastTimePressed = newDate
     }
-    lastTimePressed = lastTimePressed += 1;
 
 }
