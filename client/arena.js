@@ -56,7 +56,6 @@ class Arena {
             score += rowCount * 10;
             rowCount *= 2;
         }
-        player.restoreHoldEnergy(score)
         this.events.emit('matrix', this.matrix);
         return score;
     }

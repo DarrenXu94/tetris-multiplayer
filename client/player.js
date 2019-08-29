@@ -20,13 +20,16 @@ class Player {
         this.nextPeices = []
         this.nextPeicesArrayLength = 3;
 
-        this.pauseJuice = 200;
+        this.storedPiece = this.createPiece("ILJOTSZ"["ILJOTSZ".length * Math.random() | 0])
 
         this.futurePiece = null
 
         this.piecesAvailable = "ILJOTSZ".split("")
 
+        // Order matters
         this.reset();
+        this.hasSwapped = false;
+
     }
 
     createPiece(type) {
@@ -79,6 +82,8 @@ class Player {
         this.pos.y++;
         this.dropCounter = 0;
         if (this.arena.collide(this)) {
+            this.pieceSelected = null
+
             this.pos.y--;
             this.arena.merge(this);
             this.reset();
@@ -92,16 +97,19 @@ class Player {
 
     }
 
-    restoreHoldEnergy(amount) {
-        this.pauseJuice += amount
-    }
-
     holdPiece() {
-        if (this.pauseJuice) {
+        if (!this.hasSwapped) {
+            this.hasSwapped = true;
+            let tempMatrix = JSON.parse(JSON.stringify(this.matrix));
+            this.matrix = JSON.parse(JSON.stringify(this.storedPiece));
+            this.storedPiece = JSON.parse(JSON.stringify(tempMatrix));
 
-            this.dropInterval = 6000;
-            this.pauseJuice--;
+            this.pos.y = 0;
+            this.pos.x = (this.arena.matrix[0].length / 2 | 0) -
+                (this.matrix[0].length / 2 | 0);
+            this.showFuturePiece()
         }
+
     }
 
     showFuturePiece() {
@@ -131,6 +139,7 @@ class Player {
         this.pos.x += dir;
         if (this.arena.collide(this)) {
             this.pos.x -= dir;
+            this.pieceSelected = null
             return;
         }
         this.showFuturePiece()
@@ -161,7 +170,6 @@ class Player {
         if (this.arena.collide(this)) {
             this.arena.clear();
             this.score = 0;
-            this.pauseJuice = 200;
             this.events.emit('score', this.score);
         }
 
@@ -169,6 +177,8 @@ class Player {
 
         this.events.emit('pos', this.pos);
         this.events.emit('matrix', this.matrix);
+        this.hasSwapped = false;
+
     }
 
     rotate(dir) {
@@ -181,6 +191,7 @@ class Player {
             if (offset > this.matrix[0].length) {
                 this._rotateMatrix(this.matrix, -dir);
                 this.pos.x = pos;
+                this.pieceSelected = null
                 return;
             }
         }

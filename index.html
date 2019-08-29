@@ -35,15 +35,12 @@
 </head>
 
 <body>
-    <button id="start">Ready to play?</button>
     <div id="main">
         <template id="player-template">
             <div class="player">
                 <div class="score"></div>
-                <div class="juice"></div>
-                <p>Next piece on the left</p>
+                <canvas id="saved" width="60" height="60" style="border: solid .2em #707070;"></canvas>
                 <canvas id="pieces" width="300" height="60" style="border: solid .2em #707070;"></canvas>
-
                 <canvas class="tetris" width="240" height="400"
                     style="border: solid .2em #707070; height: 80vh;"></canvas>
             </div>

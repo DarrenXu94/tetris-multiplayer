@@ -20,6 +20,8 @@ class Tetris {
         this.nextcontext.fillStyle = '#000';
         this.nextcontext.fillRect(0, 0, this.nextcanvas.height, this.nextcanvas.width);
 
+        this.initSavedPiece()
+
         this.piecesArray = []
 
         this.player.events.listen('nextPeices', piecesArray => {
@@ -44,14 +46,37 @@ class Tetris {
             lastTime = time;
 
             this.player.update(deltaTime);
-            this.element.querySelector('.juice').innerText = this.player.pauseJuice + " space juice left";
-
-
+            this.drawSavedPiece()
             this.draw();
             requestAnimationFrame(this._update);
         };
 
         this.updateScore(0);
+    }
+
+    initSavedPiece() {
+        this.savedcanvas = this.element.querySelector('#saved');
+        this.savedcontext = this.savedcanvas.getContext('2d');
+        this.savedcontext.scale(20, 20);
+        this.savedcontext.fillStyle = '#000';
+        this.savedcontext.fillRect(0, 0, this.savedcanvas.height, this.savedcanvas.width);
+    }
+
+    drawSavedPiece() {
+        if (this.player.storedPiece) {
+            this.savedcontext.fillStyle = '#000';
+            this.savedcontext.fillRect(0, 0, this.savedcanvas.height, this.savedcanvas.width);
+            let matrix = this.player.storedPiece
+            matrix.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value !== 0) {
+                        this.savedcontext.fillStyle = this.colors[value];
+                        this.savedcontext.fillRect(x, y, 1, 1);
+                    }
+                });
+            });
+
+        }
     }
 
     draw() {
@@ -62,7 +87,6 @@ class Tetris {
         this.nextcontext.fillRect(0, 0, this.nextcanvas.height, this.nextcanvas.width);
 
         this.showNextPieces()
-
 
         this.drawMatrix(this.arena.matrix, { x: 0, y: 0 });
         this.drawMatrix(this.player.matrix, this.player.pos);

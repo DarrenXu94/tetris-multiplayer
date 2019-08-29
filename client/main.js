@@ -23,10 +23,20 @@ const keyListener = (event) => {
                 player.rotate(1);
             } else if (event.keyCode === key[2]) {
                 if (!player.holdingKeyDown) {
-
                     player.dropInterval = 1;
                     player.holdingKeyDown = true;
                 }
+            } else if (event.keyCode == "13") {
+                console.log("Enter pressed")
+                tetrisLocal.gameReady = true
+                tetrisLocal.run()
+                connectionManager.sendStartNotification()
+            }
+            else if (event.keyCode == "32") {
+                let player = tetrisLocal.player;
+
+                player.holdPiece()
+
             }
         } else {
             player.dropInterval = player.DROP_SLOW;
@@ -37,13 +47,6 @@ const keyListener = (event) => {
 }
 document.addEventListener('keydown', keyListener);
 document.addEventListener('keyup', keyListener);
-
-let startButton = document.getElementById("start")
-startButton.addEventListener("click", (e) => {
-    tetrisLocal.gameReady = true
-    tetrisLocal.run()
-    connectionManager.sendStartNotification()
-});
 
 let lastTimePressed = new Date()
 function draw() {
@@ -60,9 +63,11 @@ function draw() {
         } else if (keyIsDown(DOWN_ARROW)) {
             player.dropInterval = player.DROP_FAST;
             lastTimePressed = 0
-        } else if (keyIsDown(32)) {
-            player.holdPiece()
         }
+        // else if (keyIsDown(32)) {
+        //     player.holdPiece()
+
+        // }
         lastTimePressed = newDate
     }
 
