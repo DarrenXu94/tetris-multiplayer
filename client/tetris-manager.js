@@ -11,7 +11,9 @@ class TetrisManager {
             .importNode(this.template.content, true)
             .children[0];
 
-        const tetris = new Tetris(element);
+        let isLocal = this.instances.length == 0
+
+        const tetris = new Tetris(element, isLocal);
 
         let tetrisMain = document.getElementById("main")
         tetrisMain.appendChild(tetris.element)
@@ -32,10 +34,13 @@ class TetrisManager {
     }
 
     sortPlayers(tetri) {
+        let indexOfLocal = tetri.findIndex(x => x.element.className == 'player local')
+        let localInstance = tetri[indexOfLocal]
+        tetri.splice(indexOfLocal, 1)
+        tetri.unshift(localInstance)
         tetri.forEach(tetris => {
             let tetrisMain = document.getElementById("main")
             tetrisMain.appendChild(tetris.element)
-            // this.document.body.appendChild(tetris.element);
         });
     }
 }

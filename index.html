@@ -19,18 +19,13 @@
         }
 
         .player {
-            /* flex: 1 1 auto; */
-            width: 500px;
+            flex: 1 1 auto;
+            /* width: 500px; */
         }
 
         .player.local canvas {
             border-color: #fff;
         }
-
-        /* .score canvas {
-            border: solid .2em #707070;
-            height: 80vh;
-        } */
     </style>
 </head>
 
@@ -38,11 +33,13 @@
     <div id="main">
         <template id="player-template">
             <div class="player">
-                <div class="score"></div>
-                <canvas id="saved" width="60" height="60" style="border: solid .2em #707070;"></canvas>
-                <canvas id="pieces" width="300" height="60" style="border: solid .2em #707070;"></canvas>
-                <canvas class="tetris" width="240" height="400"
-                    style="border: solid .2em #707070; height: 80vh;"></canvas>
+                <div class="row">
+
+                    <div class="score"></div>
+                    <canvas id="saved" width="60" height="60" style="border: solid .2em #707070;"></canvas>
+                    <canvas id="pieces" width="300" height="60" style="border: solid .2em #707070;"></canvas>
+                </div>
+                <canvas class="tetris" width="240" height="400" style="border: solid .2em #707070;"></canvas>
             </div>
         </template>
     </div>

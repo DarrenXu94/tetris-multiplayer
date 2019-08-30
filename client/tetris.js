@@ -1,11 +1,22 @@
 class Tetris {
-    constructor(element) {
+    constructor(element, isLocal) {
         this.gameReady = false;
         this.element = element;
         // this.canvas = element.querySelector('canvas');
         this.canvas = element.querySelector('.tetris');
-        this.context = this.canvas.getContext('2d');
-        this.context.scale(20, 20);
+
+        if (isLocal) {
+            this.canvas.height = 600;
+            this.canvas.width = 360;
+
+            this.context = this.canvas.getContext('2d');
+            this.context.scale(30, 30);
+        } else {
+            this.context = this.canvas.getContext('2d');
+            this.context.scale(20, 20);
+        }
+
+
 
         this.arena = new Arena(12, 20);
         this.player = new Player(this);
