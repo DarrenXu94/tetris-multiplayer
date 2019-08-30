@@ -29,14 +29,13 @@ const keyListener = (event) => {
             } else if (event.keyCode == "13") {
                 console.log("Enter pressed")
                 tetrisLocal.gameReady = true
+                hideEnterMessage()
                 tetrisLocal.run()
                 connectionManager.sendStartNotification()
             }
             else if (event.keyCode == "32") {
                 let player = tetrisLocal.player;
-
                 player.holdPiece()
-
             }
         } else {
             player.dropInterval = player.DROP_SLOW;
@@ -47,6 +46,10 @@ const keyListener = (event) => {
 }
 document.addEventListener('keydown', keyListener);
 document.addEventListener('keyup', keyListener);
+
+function hideEnterMessage() {
+    document.getElementsByClassName('layover')[0].style.display = "none"
+}
 
 let lastTimePressed = new Date()
 function draw() {
