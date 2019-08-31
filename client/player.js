@@ -26,6 +26,8 @@ class Player {
 
         this.piecesAvailable = "ILJOTSZ".split("")
 
+        this.gameOver = false
+
         // Order matters
         this.reset();
         this.hasSwapped = false;
@@ -79,21 +81,25 @@ class Player {
     }
 
     drop() {
-        this.pos.y++;
-        this.dropCounter = 0;
-        if (this.arena.collide(this)) {
-            this.pieceSelected = null
+        if (!this.gameOver) {
 
-            this.pos.y--;
-            this.arena.merge(this);
-            this.reset();
-            this.score += this.arena.sweep(this);
-            this.events.emit('score', this.score);
-            return;
+            this.pos.y++;
+            this.dropCounter = 0;
+            if (this.arena.collide(this)) {
+                this.pieceSelected = null
+
+                this.pos.y--;
+                this.arena.merge(this);
+                this.reset();
+                this.score += this.arena.sweep(this);
+                this.events.emit('score', this.score);
+                return;
+            }
+            this.events.emit('pos', this.pos);
+            this.events.emit('nextPeices', this.nextPeices);
+            this.showFuturePiece()
         }
-        this.events.emit('pos', this.pos);
-        this.events.emit('nextPeices', this.nextPeices);
-        this.showFuturePiece()
+
 
     }
 
@@ -136,14 +142,23 @@ class Player {
     }
 
     move(dir) {
-        this.pos.x += dir;
-        if (this.arena.collide(this)) {
-            this.pos.x -= dir;
-            this.pieceSelected = null
-            return;
+        if (!this.gameOver) {
+            this.pos.x += dir;
+            if (this.arena.collide(this)) {
+                this.pos.x -= dir;
+                this.pieceSelected = null
+                return;
+            }
+            this.showFuturePiece()
+            this.events.emit('pos', this.pos);
         }
-        this.showFuturePiece()
-        this.events.emit('pos', this.pos);
+    }
+
+    newGame() {
+        this.DROP_SLOW = 1000;
+        this.arena.clear();
+        this.score = 0;
+        this.events.emit('score', this.score);
     }
 
     reset() {
@@ -168,9 +183,8 @@ class Player {
         this.pos.x = (this.arena.matrix[0].length / 2 | 0) -
             (this.matrix[0].length / 2 | 0);
         if (this.arena.collide(this)) {
-            this.arena.clear();
-            this.score = 0;
-            this.events.emit('score', this.score);
+            this.gameOver = true
+
         }
 
         this.dropInterval = this.DROP_SLOW
@@ -182,21 +196,24 @@ class Player {
     }
 
     rotate(dir) {
-        const pos = this.pos.x;
-        let offset = 1;
-        this._rotateMatrix(this.matrix, dir);
-        while (this.arena.collide(this)) {
-            this.pos.x += offset;
-            offset = -(offset + (offset > 0 ? 1 : -1));
-            if (offset > this.matrix[0].length) {
-                this._rotateMatrix(this.matrix, -dir);
-                this.pos.x = pos;
-                this.pieceSelected = null
-                return;
+        if (!this.gameOver) {
+
+            const pos = this.pos.x;
+            let offset = 1;
+            this._rotateMatrix(this.matrix, dir);
+            while (this.arena.collide(this)) {
+                this.pos.x += offset;
+                offset = -(offset + (offset > 0 ? 1 : -1));
+                if (offset > this.matrix[0].length) {
+                    this._rotateMatrix(this.matrix, -dir);
+                    this.pos.x = pos;
+                    this.pieceSelected = null
+                    return;
+                }
             }
+            this.showFuturePiece()
+            this.events.emit('matrix', this.matrix);
         }
-        this.showFuturePiece()
-        this.events.emit('matrix', this.matrix);
     }
 
     _rotateMatrix(matrix, dir) {

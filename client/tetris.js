@@ -16,7 +16,7 @@ class Tetris {
             this.context.scale(20, 20);
         }
 
-
+        this.increaseDropSpeedCounter = new Date()
 
         this.arena = new Arena(12, 20);
         this.player = new Player(this);
@@ -57,7 +57,8 @@ class Tetris {
             lastTime = time;
 
             this.player.update(deltaTime);
-            this.drawSavedPiece()
+            this.drawSavedPiece();
+            this.increaseDropSpeed()
             this.draw();
             requestAnimationFrame(this._update);
         };
@@ -71,6 +72,15 @@ class Tetris {
         this.savedcontext.scale(20, 20);
         this.savedcontext.fillStyle = '#000';
         this.savedcontext.fillRect(0, 0, this.savedcanvas.height, this.savedcanvas.width);
+    }
+
+    increaseDropSpeed() {
+        // console.log("Speed increased")
+        let newTime = new Date()
+        if (Math.abs(newTime - this.increaseDropSpeedCounter) > 5000 && this.player.DROP_SLOW > 100) {
+            this.increaseDropSpeedCounter = newTime
+            this.player.DROP_SLOW = this.player.DROP_SLOW * 0.95
+        }
     }
 
     drawSavedPiece() {
