@@ -132,8 +132,9 @@ class Tetris {
 
     run() {
         if (this.gameReady) {
-
             this._update();
+            this.player.newGame()
+            this.player.gameOver = false;
         }
     }
 

@@ -26,6 +26,8 @@ class Player {
 
         this.gameOver = false
 
+        this.futureY = 0;
+
         // Order matters
         this.reset();
         this.hasSwapped = false;
@@ -95,19 +97,28 @@ class Player {
             }
             this.events.emit('pos', this.pos);
             this.events.emit('nextPeices', this.nextPeices);
+            this.calculateFutureY()
             this.showFuturePiece()
         }
     }
 
-    fastDrop() {
+    calculateFutureY() {
         let localPos = this.pos
         let localY = localPos.y
         while (!this.arena.collide({ matrix: this.matrix, pos: { x: this.pos.x, y: localY } })) {
             localY += 1
         }
         localY = localY - 1;
-        this.pos = { x: this.pos.x, y: localY }
+        this.futureY = localY
+    }
+
+    fastDrop() {
+        this.calculateFutureY()
+
+        this.pos = { x: this.pos.x, y: this.futureY }
         this.drop()
+        this.showFuturePiece()
+
     }
 
     holdPiece() {
@@ -126,11 +137,7 @@ class Player {
     }
 
     showFuturePiece() {
-        let localPos = this.pos
-        let localY = localPos.y
-        while (!this.arena.collide({ matrix: this.matrix, pos: { x: this.pos.x, y: localY } })) {
-            localY += 1
-        }
+        this.calculateFutureY()
 
         let coloredMatrix = [];
         this.matrix.forEach((row, y) => {
@@ -145,7 +152,7 @@ class Player {
             coloredMatrix.push(newRow)
         })
 
-        this.futurePiece = { matrix: coloredMatrix, pos: { x: this.pos.x, y: localY - 1 } }
+        this.futurePiece = { matrix: coloredMatrix, pos: { x: this.pos.x, y: this.futureY } }
     }
 
     move(dir) {
