@@ -15,8 +15,6 @@ class Player {
         this.matrix = null;
         this.score = 0;
 
-        this.holdingKeyDown = false
-
         this.nextPeices = []
         this.nextPeicesArrayLength = 3;
 
@@ -99,8 +97,17 @@ class Player {
             this.events.emit('nextPeices', this.nextPeices);
             this.showFuturePiece()
         }
+    }
 
-
+    fastDrop() {
+        let localPos = this.pos
+        let localY = localPos.y
+        while (!this.arena.collide({ matrix: this.matrix, pos: { x: this.pos.x, y: localY } })) {
+            localY += 1
+        }
+        localY = localY - 1;
+        this.pos = { x: this.pos.x, y: localY }
+        this.drop()
     }
 
     holdPiece() {

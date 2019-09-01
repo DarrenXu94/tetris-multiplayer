@@ -22,10 +22,7 @@ const keyListener = (event) => {
             } else if (event.keyCode === key[1]) {
                 player.rotate(1);
             } else if (event.keyCode === key[2]) {
-                if (!player.holdingKeyDown) {
-                    player.dropInterval = 1;
-                    player.holdingKeyDown = true;
-                }
+                player.fastDrop()
             } else if (event.keyCode == "13") {
                 console.log("Enter pressed")
                 tetrisLocal.gameReady = true
@@ -39,7 +36,6 @@ const keyListener = (event) => {
             }
         } else {
             player.dropInterval = player.DROP_SLOW;
-            player.holdingKeyDown = false
         }
 
     })
