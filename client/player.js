@@ -28,6 +28,8 @@ class Player {
 
         this.futureY = 0;
 
+        this.nextTickNewPiece = false;
+
         // Order matters
         this.reset();
         this.hasSwapped = false;
@@ -86,14 +88,21 @@ class Player {
             this.pos.y++;
             this.dropCounter = 0;
             if (this.arena.collide(this)) {
-                this.pieceSelected = null
+                if (this.nextTickNewPiece) {
+                    this.nextTickNewPiece = false;
+                    this.pieceSelected = null
 
-                this.pos.y--;
-                this.arena.merge(this);
-                this.reset();
-                this.score += this.arena.sweep(this);
-                this.events.emit('score', this.score);
-                return;
+                    this.pos.y--;
+                    this.arena.merge(this);
+                    this.reset();
+                    this.score += this.arena.sweep(this);
+                    this.events.emit('score', this.score);
+                    return;
+                } else {
+                    this.pos.y--;
+                    this.nextTickNewPiece = true;
+                }
+
             }
             this.events.emit('pos', this.pos);
             this.events.emit('nextPeices', this.nextPeices);
@@ -116,6 +125,8 @@ class Player {
         this.calculateFutureY()
 
         this.pos = { x: this.pos.x, y: this.futureY }
+        this.nextTickNewPiece = true;
+
         this.drop()
         this.showFuturePiece()
 
@@ -221,7 +232,9 @@ class Player {
                 if (offset > this.matrix[0].length) {
                     this._rotateMatrix(this.matrix, -dir);
                     this.pos.x = pos;
-                    this.pieceSelected = null
+                    this.pieceSelected = null;
+                    this.nextTickNewPiece = false;
+                    this.pos.y--;
                     return;
                 }
             }

@@ -24,7 +24,6 @@ const keyListener = (event) => {
             } else if (event.keyCode === key[2]) {
                 player.fastDrop()
             } else if (event.keyCode == "13") {
-                console.log("Enter pressed")
                 tetrisLocal.gameReady = true
                 hideEnterMessage()
                 tetrisLocal.run()
