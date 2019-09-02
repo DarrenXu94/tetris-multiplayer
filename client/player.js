@@ -28,7 +28,7 @@ class Player {
 
         this.futureY = 0;
 
-        this.nextTickNewPiece = false;
+        this.timeOfLastCollide = new Date()
 
         // Order matters
         this.reset();
@@ -88,21 +88,17 @@ class Player {
             this.pos.y++;
             this.dropCounter = 0;
             if (this.arena.collide(this)) {
-                if (this.nextTickNewPiece) {
-                    this.nextTickNewPiece = false;
+                let newTime = new Date()
+                if (Math.abs(newTime - this.timeOfLastCollide) > 1000) {
                     this.pieceSelected = null
-
                     this.pos.y--;
                     this.arena.merge(this);
                     this.reset();
                     this.score += this.arena.sweep(this);
                     this.events.emit('score', this.score);
                     return;
-                } else {
-                    this.pos.y--;
-                    this.nextTickNewPiece = true;
                 }
-
+                this.timeOfLastCollide = new Date()
             }
             this.events.emit('pos', this.pos);
             this.events.emit('nextPeices', this.nextPeices);
@@ -123,13 +119,9 @@ class Player {
 
     fastDrop() {
         this.calculateFutureY()
-
         this.pos = { x: this.pos.x, y: this.futureY }
-        this.nextTickNewPiece = true;
-
         this.drop()
         this.showFuturePiece()
-
     }
 
     holdPiece() {
@@ -167,6 +159,7 @@ class Player {
     }
 
     move(dir) {
+
         if (!this.gameOver) {
             this.pos.x += dir;
             if (this.arena.collide(this)) {
@@ -233,7 +226,6 @@ class Player {
                     this._rotateMatrix(this.matrix, -dir);
                     this.pos.x = pos;
                     this.pieceSelected = null;
-                    this.nextTickNewPiece = false;
                     this.pos.y--;
                     return;
                 }
