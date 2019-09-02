@@ -28,7 +28,8 @@ class Player {
 
         this.futureY = 0;
 
-        this.timeOfLastCollide = new Date()
+        this.timeOfLastCollide = null;
+        this.timeIntervalOfCollision = 700;
 
         // Order matters
         this.reset();
@@ -88,17 +89,22 @@ class Player {
             this.pos.y++;
             this.dropCounter = 0;
             if (this.arena.collide(this)) {
-                let newTime = new Date()
-                if (Math.abs(newTime - this.timeOfLastCollide) > 1000) {
-                    this.pieceSelected = null
-                    this.pos.y--;
-                    this.arena.merge(this);
-                    this.reset();
-                    this.score += this.arena.sweep(this);
-                    this.events.emit('score', this.score);
-                    return;
+                this.pos.y--;
+
+                if (this.timeOfLastCollide == null) {
+                    this.timeOfLastCollide = new Date()
+                } else {
+                    let newTime = new Date()
+                    if (Math.abs(newTime - this.timeOfLastCollide) > this.timeIntervalOfCollision) {
+                        this.pieceSelected = null
+                        this.arena.merge(this);
+                        this.reset();
+                        this.score += this.arena.sweep(this);
+                        this.events.emit('score', this.score);
+                        this.timeOfLastCollide = null
+                        return;
+                    }
                 }
-                this.timeOfLastCollide = new Date()
             }
             this.events.emit('pos', this.pos);
             this.events.emit('nextPeices', this.nextPeices);
@@ -120,6 +126,8 @@ class Player {
     fastDrop() {
         this.calculateFutureY()
         this.pos = { x: this.pos.x, y: this.futureY }
+        this.timeOfLastCollide = new Date() - 2 * this.timeIntervalOfCollision
+
         this.drop()
         this.showFuturePiece()
     }
@@ -173,7 +181,7 @@ class Player {
     }
 
     newGame() {
-        this.DROP_SLOW = 1000;
+        this.DROP_SLOW = 300;
         this.arena.clear();
         this.score = 0;
         this.events.emit('score', this.score);
@@ -215,6 +223,7 @@ class Player {
 
     rotate(dir) {
         if (!this.gameOver) {
+            this.timeOfLastCollide = new Date()
 
             const pos = this.pos.x;
             let offset = 1;
@@ -226,6 +235,7 @@ class Player {
                     this._rotateMatrix(this.matrix, -dir);
                     this.pos.x = pos;
                     this.pieceSelected = null;
+                    this.pos.y--;
                     this.pos.y--;
                     return;
                 }
