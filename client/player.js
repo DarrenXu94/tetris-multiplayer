@@ -85,7 +85,6 @@ class Player {
 
     drop() {
         if (!this.gameOver) {
-
             this.pos.y++;
             this.dropCounter = 0;
             if (this.arena.collide(this)) {
@@ -105,7 +104,11 @@ class Player {
                         return;
                     }
                 }
+            } else {
+                this.timeOfLastCollide = null
+
             }
+
             this.events.emit('pos', this.pos);
             this.events.emit('nextPeices', this.nextPeices);
             this.calculateFutureY()
