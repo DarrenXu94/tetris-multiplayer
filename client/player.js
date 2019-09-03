@@ -184,7 +184,7 @@ class Player {
     }
 
     newGame() {
-        this.DROP_SLOW = 300;
+        this.DROP_SLOW = 1000;
         this.arena.clear();
         this.score = 0;
         this.events.emit('score', this.score);
