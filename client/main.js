@@ -6,6 +6,7 @@ function setup() {
     tetrisLocal = tetrisManager.createPlayer();
     tetrisLocal.element.classList.add('local');
     tetrisLocal.run();
+
     connectionManager = new ConnectionManager(tetrisManager);
     // connectionManager.connect('ws://boiling-coast-74828.herokuapp.com/')
     connectionManager.connect('ws://localhost:9000');

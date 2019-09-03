@@ -25,10 +25,19 @@ class Tetris {
             this.updateScore(score);
         });
 
+        // Item canvas
+        this.itemCanvas = element.querySelector('#item');
+        this.itemContext = this.itemCanvas.getContext('2d');
+        this.itemContext.scale(10, 10);
+        this.itemContext.fillStyle = '#000';
+        this.itemContext.fillRect(0, 0, this.itemCanvas.height, this.itemCanvas.width);
+
+
+        // Next piece canvas
         this.nextcanvas = element.querySelector('#pieces');
         this.nextcontext = this.nextcanvas.getContext('2d');
         this.nextcontext.scale(20, 20);
-        this.nextcontext.fillStyle = '#000';
+        this.nextcontext.fillStyle = '#fff';
         this.nextcontext.fillRect(0, 0, this.nextcanvas.height, this.nextcanvas.width);
 
         this.initSavedPiece()
@@ -58,6 +67,7 @@ class Tetris {
 
             this.player.update(deltaTime);
             this.drawSavedPiece();
+            this.drawItem();
             this.increaseDropSpeed()
             this.draw();
             requestAnimationFrame(this._update);
@@ -81,6 +91,13 @@ class Tetris {
             this.increaseDropSpeedCounter = newTime
             this.player.DROP_SLOW = this.player.DROP_SLOW * 0.95
         }
+    }
+
+    drawItem() {
+        this.itemContext.fillStyle = '#fff';
+        this.itemContext.fillRect(0, 0, this.savedcanvas.height, this.savedcanvas.width);
+        this.itemContext.fillStyle = '#000'
+        this.itemContext.fillRect(1, 1, 1, 1)
     }
 
     drawSavedPiece() {
