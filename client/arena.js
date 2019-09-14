@@ -55,7 +55,7 @@ class Arena {
 
             score += rowCount * 10;
             rowCount *= 2;
-            player.itemManager.generateItem()
+            // player.itemManager.generateItem()
         }
         this.events.emit('matrix', this.matrix);
         return score;

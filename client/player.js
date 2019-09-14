@@ -31,7 +31,7 @@ class Player {
         this.timeOfLastCollide = null;
         this.timeIntervalOfCollision = 700;
 
-        this.itemManager = new ItemManager(this)
+        // this.itemManager = new ItemManager(this)
 
         // Order matters
         this.reset();
