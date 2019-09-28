@@ -3,6 +3,11 @@
 <head>
     <title>Tetris</title>
     <style>
+        html {
+            background: radial-gradient(#000, #111);
+            height: 100%;
+        }
+
         body {
             background: #000;
             color: #fff;
@@ -37,6 +42,53 @@
             justify-content: center;
             align-items: center;
         }
+
+        .keys {
+            text-align: center;
+            width: 250px;
+            height: 100px;
+            margin: auto;
+        }
+
+        .arr {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            background: grey;
+            color: white;
+            font-size: 10px;
+            border-right: 10px solid rgb(85, 83, 83);
+            border-bottom: 10px solid rgb(85, 83, 83);
+            border-left: 10px solid rgb(105, 102, 102);
+            border-top: 10px solid rgb(136, 136, 136);
+            display: inline-block;
+            margin: 2px;
+            transition: all .05s linear;
+
+        }
+
+        .up {
+            position: relative;
+            top: -4px;
+            left: 2px;
+        }
+
+        .space {
+            width: 50px;
+        }
+
+        .controls {
+            display: flex;
+        }
+
+        .instructions {
+            background-color: rgb(181, 179, 179);
+            margin: 30px;
+            border-radius: 3px;
+            height: 400px;
+        }
     </style>
 </head>
 
@@ -50,14 +102,40 @@
         <template id="player-template">
             <div class="player">
                 <div class="row">
-
                     <div class="score"></div>
                     <canvas id="saved" width="60" height="60" style="border: solid .2em #707070;"></canvas>
                     <canvas id="pieces" width="300" height="60" style="border: solid .2em #707070;"></canvas>
                 </div>
                 <canvas class="tetris" width="240" height="400" style="border: solid .2em #707070;"></canvas>
+
             </div>
         </template>
+    </div>
+    <div class="instructions">
+        <h2>How to Play</h2>
+        <div class="controls">
+
+            <div class="keys">
+                <div class="up arr"><i class="fa fa-arrow-up"></i></div>
+                <br />
+                <div class="left arr"><i class="fa fa-arrow-left"></i></div>
+                <div class="down arr"><i class="fa fa-arrow-down"></i></div>
+                <div class="right arr"><i class="fa fa-arrow-right"></i></div>
+                <p>Move</p>
+            </div>
+            <div class="keys">
+                <br />
+                <div class="arr"><b>Z</b></div>
+                <div class="arr"><b>X</b></div>
+                <p>Rotate</p>
+            </div>
+            <div class="keys">
+                <br />
+
+                <div class="arr space"><b>Space</b></div>
+                <p>Save/Swap Piece</p>
+            </div>
+        </div>
     </div>
     <script src="./libraries/p5.js"></script>
     <script src="./libraries/p5.dom.js"></script>
@@ -72,5 +150,6 @@
     <script src="client/tetris.js"></script>
     <script src="client/main.js"></script>
 </body>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 </html>
