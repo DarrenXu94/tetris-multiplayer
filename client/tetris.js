@@ -6,11 +6,11 @@ class Tetris {
         this.canvas = element.querySelector('.tetris');
 
         if (isLocal) {
-            this.canvas.height = 600;
-            this.canvas.width = 360;
+            this.canvas.height = 500;
+            this.canvas.width = 300;
 
             this.context = this.canvas.getContext('2d');
-            this.context.scale(30, 30);
+            this.context.scale(25, 25);
         } else {
             this.context = this.canvas.getContext('2d');
             this.context.scale(20, 20);

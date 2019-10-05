@@ -5,6 +5,8 @@ class ConnectionManager {
 
         this.tetrisManager = tetrisManager;
         this.localTetris = this.tetrisManager.instances[0];
+
+        this.populateInputWithId();
     }
 
     connect(address) {
@@ -110,10 +112,16 @@ class ConnectionManager {
         }
     }
 
+    populateInputWithId() {
+        const input = this.tetrisManager.document.querySelector('#copy-link');
+        input.value = window.location
+    }
+
     receive(msg) {
         const data = JSON.parse(msg);
         if (data.type === 'session-created') {
             window.location.hash = data.id;
+            this.populateInputWithId(data.id);
         } else if (data.type === 'session-broadcast') {
             this.updateManager(data.peers);
         } else if (data.type === 'state-update') {
