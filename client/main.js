@@ -8,8 +8,8 @@ function setup() {
     tetrisLocal.run();
 
     connectionManager = new ConnectionManager(tetrisManager);
-    // connectionManager.connect('ws://boiling-coast-74828.herokuapp.com/')
-    connectionManager.connect('ws://localhost:9000');
+    connectionManager.connect('ws://boiling-coast-74828.herokuapp.com/')
+    // connectionManager.connect('ws://localhost:9000');
 
 }
 const keyListener = (event) => {
