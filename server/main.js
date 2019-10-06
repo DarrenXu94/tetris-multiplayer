@@ -3,7 +3,7 @@ const Session = require('./session');
 const Client = require('./client');
 const express = require('express')
 
-let port = process.env.PORT | 9000
+let port = process.env.PORT || 9000
 
 const ExpServer = express()
     .use((req, res) => res.send(""))
